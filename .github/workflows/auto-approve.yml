@@ -3,12 +3,21 @@ name: Auto approve
 on: pull_request_target
 
 jobs:
-  auto-approve:
+  auto-approve-and-merge:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
+      contents: write
     if: github.actor == '0zcx'
     steps:
-      - uses: hmarr/auto-approve-action@v4
+      - name: Auto approve
+        uses: hmarr/auto-approve-action@v4
         with:
           github-token: ${{ secrets.PAT_TOKEN }}
+
+      - name: Auto merge
+        run: |
+          gh pr merge ${{ github.event.pull_request.number }} --auto --squash
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+          GH_REPO: ${{ github.repository }}
