@@ -10,3 +10,5 @@ jobs:
     if: github.actor == '0zcx'
     steps:
       - uses: hmarr/auto-approve-action@v4
+        with:
+          github-token: ${{ secrets.PAT_TOKEN }}
